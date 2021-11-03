@@ -34,16 +34,16 @@ namespace SpaceInvaders.Model
 
         #region Data members
 
-        private const int enemyShipSteps = 20;
+        private const int maxTimeBetweenPlayerBullets = 10;
+        private const int maxLives = 3;
+        private const int shipsPerRow = 4;
+        private const int playerBulletAmount = 3;
         private const double PlayerShipBottomOffset = 30;
         private readonly double backgroundHeight;
         private readonly double backgroundWidth;
 
-        private const int shipsPerRow = 4;
-
-        private bool movingRight;
-        private int movements;
-
+        private int timeBetweenPlayerBullets;
+        private int lives;
         private int score;
 
         public int Score
@@ -59,11 +59,7 @@ namespace SpaceInvaders.Model
         private DispatcherTimer timer;
         private Random random;
 
-        private List<EnemyShip> EnemyShips1;
-        private List<EnemyShip> EnemyShips2;
-        private List<EnemyShip> EnemyShips3;
-
-        private Bullet playerBullet;
+        private IList<Bullet> playerBullets;
         private Bullet enemyBullet;
 
         private PlayerShip playerShip;
@@ -89,9 +85,9 @@ namespace SpaceInvaders.Model
 
             enemyManager = new EnemyManager(background, backgroundHeight, backgroundWidth);
 
-            movements = 0;
-            movingRight = true;
             score = 0;
+            lives = maxLives;
+            timeBetweenPlayerBullets = maxTimeBetweenPlayerBullets;
 
             timer = new DispatcherTimer();
             timer.Tick += timerTick;
@@ -115,11 +111,15 @@ namespace SpaceInvaders.Model
             Canvas.SetTop(messageDisplay, backgroundHeight / 2);
             Canvas.SetLeft(messageDisplay, backgroundWidth / 3);
 
-            playerBullet = new Bullet(true);
-            background.Children.Add(playerBullet.Sprite);
-            playerBullet.Sprite.Visibility = Visibility.Collapsed;
+            playerBullets = new List<Bullet>();
 
-            //this.enemyBullet = new EnemyBullet();
+            for(int i = 0; i < playerBulletAmount; i++)
+            {
+                playerBullets.Add(new Bullet(true));
+                background.Children.Add(playerBullets[playerBullets.Count - 1].Sprite);
+                playerBullets[playerBullets.Count - 1].Sprite.Visibility = Visibility.Collapsed;
+            }
+
             enemyBullet = new Bullet(false);
             background.Children.Add(enemyBullet.Sprite);
             enemyBullet.Sprite.Visibility = Visibility.Collapsed;
@@ -127,23 +127,32 @@ namespace SpaceInvaders.Model
 
         private void timerTick(object sender, object e)
         {
-            if (playerBullet.Sprite.Visibility == Visibility.Visible) movePlayerBullet();
+            timeBetweenPlayerBullets++;
+            movePlayerBullets();
 
             enemyManager.OnTick();
-            scoreChanged(enemyManager.DidPlayerBulletHitEnemy(playerBullet));
+            didPlayerBulletHitEnemy();
 
             if (!enemyManager.EnemiesRemain()) gameOver(true);
 
             if (enemyManager.EnemyBullet.CheckForCollision(playerShip) != null) gameOver(false);
-
-            movements++;
         }
 
-        private void movePlayerBullet()
+        private void didPlayerBulletHitEnemy()
         {
-            playerBullet.MoveUp();
+            foreach(Bullet bullet in playerBullets)
+            {
+                scoreChanged(enemyManager.DidPlayerBulletHitEnemy(bullet));
+            }
+        }
+        private void movePlayerBullets()
+        {
+            foreach(var bullet in playerBullets)
+            {
+                if(bullet.Sprite.Visibility == Visibility.Visible) bullet.MoveUp();
 
-            if (playerBullet.Y <= 0) playerBullet.Sprite.Visibility = Visibility.Collapsed;
+                if (bullet.Y <= 0) bullet.Sprite.Visibility = Visibility.Collapsed;
+            }
         }
 
         public bool DidEnemyBulletHitPlayer(Bullet bullet)
@@ -205,15 +214,28 @@ namespace SpaceInvaders.Model
             if (playerShip.X < backgroundWidth - playerShip.Width) playerShip.MoveRight();
         }
 
+        private void activatePlayerBullet(Bullet bullet)
+        {
+            bullet.X = playerShip.X + .5 * playerShip.Width - .5 * bullet.Width;
+            bullet.Y = playerShip.Y - bullet.Height;
+            bullet.Sprite.Visibility = Visibility.Visible;
+        }
+
         public void ShootPlayerBullet()
         {
-            if (playerBullet.Sprite.Visibility == Visibility.Collapsed &&
-                playerShip.Sprite.Visibility == Visibility.Visible)
+            int bulletCount = 0;
+
+            bool bulletFired = false;
+
+            do
             {
-                playerBullet.X = playerShip.X + .5 * playerShip.Width - .5 * playerBullet.Width;
-                playerBullet.Y = playerShip.Y - playerBullet.Height;
-                playerBullet.Sprite.Visibility = Visibility.Visible;
-            }
+                if(playerBullets[bulletCount].Sprite.Visibility == Visibility.Collapsed)
+                {
+                    activatePlayerBullet(playerBullets[bulletCount]);
+                    bulletFired = true;
+                }
+                bulletCount++;
+            } while (bulletFired == false && bulletCount < playerBullets.Count && timeBetweenPlayerBullets >= maxTimeBetweenPlayerBullets);
         }
 
         #endregion

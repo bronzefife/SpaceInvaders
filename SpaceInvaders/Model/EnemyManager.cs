@@ -153,7 +153,7 @@ namespace SpaceInvaders.Model
 
         private void randomShot()
         {
-            var shootingShips = -1;
+            var shootingShips = 0;
 
             foreach (var ship in enemyShips)
                 if (ship.CanShoot)
