@@ -27,10 +27,7 @@ namespace SpaceInvaders.Model
         /// and is enemy bullet if set to <c>false</c>.</param>
         public Bullet(bool isPlayerBullet)
         {
-            if (isPlayerBullet)
-                Sprite = new PlayerBulletSprite();
-            else
-                Sprite = new EnemyBulletSprite();
+            Sprite = isPlayerBullet ? new PlayerBulletSprite() : (BaseSprite)new EnemyBulletSprite();
 
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
@@ -43,21 +40,30 @@ namespace SpaceInvaders.Model
         /// <exception cref="ArgumentNullException">ship</exception>
         public GameObject CheckForCollision(GameObject ship)
         {
-            if (ship == null) throw new ArgumentNullException(nameof(ship));
+            if (ship == null)
+            {
+                throw new ArgumentNullException(nameof(ship));
+            }
 
-            if (Sprite.Visibility == Visibility.Collapsed) return null;
+            if (Sprite.Visibility != Visibility.Collapsed)
+            {
+                var bulletBoundary = new Rect(X, Y, Width, Height);
+                var shipBoundary = new Rect(ship.X, ship.Y, ship.Width, ship.Height);
 
-            var bulletBoundary = new Rect(X, Y, Width, Height);
-            var shipBoundary = new Rect(ship.X, ship.Y, ship.Width, ship.Height);
+                var intersect = bulletBoundary;
+                intersect.Intersect(shipBoundary);
 
-            var intersect = bulletBoundary;
-            intersect.Intersect(shipBoundary);
+                if (intersect.IsEmpty)
+                {
+                    return null;
+                }
 
-            if (intersect.IsEmpty) return null;
+                Sprite.Visibility = Visibility.Collapsed;
 
-            Sprite.Visibility = Visibility.Collapsed;
+                return ship;
+            }
 
-            return ship;
+            return null;
         }
 
         #endregion

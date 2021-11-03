@@ -19,16 +19,6 @@ namespace SpaceInvaders.Model
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="EnemyShip" /> class.
-        /// </summary>
-        public EnemyShip()
-        {
-            Sprite = new EnemyShip1Sprite();
-            SetSpeed(SpeedXDirection, SpeedYDirection);
-            PointValue = 5;
-        }
-
-        /// <summary>
         ///     Initializes a new instance of the <see cref="EnemyShip" /> class
         ///     of the given ship level.
         /// </summary>
@@ -39,32 +29,32 @@ namespace SpaceInvaders.Model
             switch (shipLevel)
             {
                 case 2:
-                    PointValue = 10;
-                    Sprite1 = new EnemyShip2Sprite();
-                    Sprite2 = new EnemyShip2Sprite2();
-                    CanShoot = false;
+                    this.PointValue = 10;
+                    this.Sprite1 = new EnemyShip2Sprite();
+                    this.Sprite2 = new EnemyShip2Sprite2();
+                    this.CanShoot = false;
                     break;
                 case 3:
-                    PointValue = 15;
-                    Sprite1 = new EnemyShip3Sprite();
-                    Sprite2 = new EnemyShip3Sprite2();
-                    CanShoot = true;
+                    this.PointValue = 15;
+                    this.Sprite1 = new EnemyShip3Sprite();
+                    this.Sprite2 = new EnemyShip3Sprite2();
+                    this.CanShoot = true;
                     break;
                 case 4:
-                    PointValue = 20;
-                    Sprite1 = new EnemyShip4Sprite();
-                    Sprite2 = new EnemyShip4Sprite2();
-                    CanShoot = true;
+                    this.PointValue = 20;
+                    this.Sprite1 = new EnemyShip4Sprite();
+                    this.Sprite2 = new EnemyShip4Sprite2();
+                    this.CanShoot = true;
                     break;
                 default:
-                    PointValue = 5;
-                    Sprite1 = new EnemyShip1Sprite();
-                    Sprite2 = new EnemyShip1Sprite();
-                    CanShoot = false;
+                    this.PointValue = 5;
+                    this.Sprite1 = new EnemyShip1Sprite();
+                    this.Sprite2 = new EnemyShip1Sprite();
+                    this.CanShoot = false;
                     break;
             }
-            Sprite = Sprite1;
-            Sprite2.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            Sprite = this.Sprite1;
+            this.Sprite2.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
         
         /// <summary>
@@ -72,17 +62,17 @@ namespace SpaceInvaders.Model
         /// </summary>
         public void Animate()
         {
-            if(Sprite.Equals(Sprite1))
+            if(Sprite.Equals(this.Sprite1))
             {
-                Sprite = Sprite2;
-                Sprite1.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                Sprite2.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                Sprite = this.Sprite2;
+                this.Sprite1.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                this.Sprite2.Visibility = Windows.UI.Xaml.Visibility.Visible;
             }
             else
             {
-                Sprite = Sprite1;
-                Sprite2.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                Sprite1.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                Sprite = this.Sprite1;
+                this.Sprite2.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                this.Sprite1.Visibility = Windows.UI.Xaml.Visibility.Visible;
             }
 
         }

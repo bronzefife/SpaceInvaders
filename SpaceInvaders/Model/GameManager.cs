@@ -22,9 +22,15 @@ namespace SpaceInvaders.Model
         /// <param name="backgroundWidth">The backgroundWidth of the game play window.</param>
         public GameManager(double backgroundHeight, double backgroundWidth)
         {
-            if (backgroundHeight <= 0) throw new ArgumentOutOfRangeException(nameof(backgroundHeight));
+            if (backgroundHeight <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(backgroundHeight));
+            }
 
-            if (backgroundWidth <= 0) throw new ArgumentOutOfRangeException(nameof(backgroundWidth));
+            if (backgroundWidth <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(backgroundWidth));
+            }
 
             this.backgroundHeight = backgroundHeight;
             this.backgroundWidth = backgroundWidth;
@@ -34,9 +40,9 @@ namespace SpaceInvaders.Model
 
         #region Data members
 
-        private const int maxTimeBetweenPlayerBullets = 10;
-        private const int maxLives = 3;
-        private const int playerBulletAmount = 3;
+        private const int MaxTimeBetweenPlayerBullets = 10;
+        private const int MaxLives = 3;
+        private const int PlayerBulletAmount = 3;
         private const double PlayerShipBottomOffset = 30;
         private readonly double backgroundHeight;
         private readonly double backgroundWidth;
@@ -48,11 +54,11 @@ namespace SpaceInvaders.Model
 
         public int Score
         {
-            get => score;
+            get => this.score;
             set
             {
-                score = Score;
-                scoreChanged(score);
+                this.score = this.Score;
+                this.scoreChanged(this.score);
             }
         }
 
@@ -81,122 +87,132 @@ namespace SpaceInvaders.Model
         /// <param name="background">The background canvas.</param>
         public void InitializeGame(Canvas background)
         {
-            if (background == null) throw new ArgumentNullException(nameof(background));
-
-            enemyManager = new EnemyManager(background, backgroundHeight, backgroundWidth);
-
-            score = 0;
-            lives = maxLives;
-            timeBetweenPlayerBullets = maxTimeBetweenPlayerBullets;
-
-            timer = new DispatcherTimer();
-            timer.Tick += timerTick;
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 10);
-            timer.Start();
-
-            random = new Random();
-
-            createAndPlacePlayerShip(background);
-
-            pointsDisplay = new TextBlock();
-            pointsDisplay.Text = score.ToString();
-            pointsDisplay.Foreground = new SolidColorBrush(Colors.White);
-            background.Children.Add(pointsDisplay);
-            Canvas.SetLeft(pointsDisplay, 25);
-
-            messageDisplay = new TextBlock();
-            messageDisplay.Visibility = Visibility.Collapsed;
-            messageDisplay.Foreground = new SolidColorBrush(Colors.White);
-            background.Children.Add(messageDisplay);
-            Canvas.SetTop(messageDisplay, backgroundHeight / 2);
-            Canvas.SetLeft(messageDisplay, backgroundWidth / 3);
-
-            playerBullets = new List<Bullet>();
-
-            for(int i = 0; i < playerBulletAmount; i++)
+            if (background == null)
             {
-                playerBullets.Add(new Bullet(true));
-                background.Children.Add(playerBullets[playerBullets.Count - 1].Sprite);
-                playerBullets[playerBullets.Count - 1].Sprite.Visibility = Visibility.Collapsed;
+                throw new ArgumentNullException(nameof(background));
             }
 
-            enemyBullet = new Bullet(false);
-            background.Children.Add(enemyBullet.Sprite);
-            enemyBullet.Sprite.Visibility = Visibility.Collapsed;
+            this.enemyManager = new EnemyManager(background, this.backgroundHeight, this.backgroundWidth);
+
+            this.score = 0;
+            this.lives = MaxLives;
+            this.timeBetweenPlayerBullets = MaxTimeBetweenPlayerBullets;
+
+            this.timer = new DispatcherTimer();
+            this.timer.Tick += this.timerTick;
+            this.timer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+            this.timer.Start();
+
+            this.random = new Random();
+
+            this.createAndPlacePlayerShip(background);
+
+            this.pointsDisplay = new TextBlock();
+            this.pointsDisplay.Text = this.score.ToString();
+            this.pointsDisplay.Foreground = new SolidColorBrush(Colors.White);
+            background.Children.Add(this.pointsDisplay);
+            Canvas.SetLeft(this.pointsDisplay, 25);
+
+            this.messageDisplay = new TextBlock();
+            this.messageDisplay.Visibility = Visibility.Collapsed;
+            this.messageDisplay.Foreground = new SolidColorBrush(Colors.White);
+            background.Children.Add(this.messageDisplay);
+            Canvas.SetTop(this.messageDisplay, this.backgroundHeight / 2);
+            Canvas.SetLeft(this.messageDisplay, this.backgroundWidth / 3);
+
+            this.playerBullets = new List<Bullet>();
+
+            for(int i = 0; i < PlayerBulletAmount; i++)
+            {
+                this.playerBullets.Add(new Bullet(true));
+                background.Children.Add(this.playerBullets[this.playerBullets.Count - 1].Sprite);
+                this.playerBullets[this.playerBullets.Count - 1].Sprite.Visibility = Visibility.Collapsed;
+            }
+
+            this.enemyBullet = new Bullet(false);
+            background.Children.Add(this.enemyBullet.Sprite);
+            this.enemyBullet.Sprite.Visibility = Visibility.Collapsed;
         }
 
         private void timerTick(object sender, object e)
         {
-            timeBetweenPlayerBullets++;
-            movePlayerBullets();
+            this.timeBetweenPlayerBullets++;
+            this.movePlayerBullets();
 
-            enemyManager.OnTick();
-            didPlayerBulletHitEnemy();
+            this.enemyManager.OnTick();
+            this.didPlayerBulletHitEnemy();
 
-            if (!enemyManager.EnemiesRemain()) gameOver(true);
+            if (!this.enemyManager.EnemiesRemain())
+            {
+                this.gameOver(true);
+            }
 
-            if (enemyManager.EnemyBullet.CheckForCollision(playerShip) != null) playerHit();
+            if (this.enemyManager.EnemyBullet.CheckForCollision(this.playerShip) != null)
+            {
+                this.playerHit();
+            }
         }
 
         private void didPlayerBulletHitEnemy()
         {
-            foreach(Bullet bullet in playerBullets)
+            foreach(Bullet bullet in this.playerBullets)
             {
-                scoreChanged(enemyManager.DidPlayerBulletHitEnemy(bullet));
+                this.scoreChanged(this.enemyManager.DidPlayerBulletHitEnemy(bullet));
             }
         }
         private void movePlayerBullets()
         {
-            foreach(var bullet in playerBullets)
+            foreach(var bullet in this.playerBullets)
             {
-                if(bullet.Sprite.Visibility == Visibility.Visible) bullet.MoveUp();
+                if(bullet.Sprite.Visibility == Visibility.Visible)
+                {
+                    bullet.MoveUp();
+                }
 
-                if (bullet.Y <= 0) bullet.Sprite.Visibility = Visibility.Collapsed;
+                if (bullet.Y <= 0)
+                {
+                    bullet.Sprite.Visibility = Visibility.Collapsed;
+                }
             }
         }
-        
-        /// <summary>
-        /// Did the enemy bullet hit player.
-        /// </summary>
-        /// <param name="bullet">The bullet.</param>
-        /// <returns>True if the player was hit, false otherwise</returns>
-        public bool DidEnemyBulletHitPlayer(Bullet bullet)
-        {
-            return bullet.CheckForCollision(playerShip) != null;
-        }
+
 
         private void scoreChanged(int pointsToAdd)
         {
-            score += pointsToAdd;
-            pointsDisplay.Text = score.ToString();
+            this.score += pointsToAdd;
+            this.pointsDisplay.Text = this.score.ToString();
         }
 
 
         private void gameOver(bool playerWon)
         {
             var message = "GAME OVER!\n";
-            timer.Stop();
+            this.timer.Stop();
             if (playerWon)
+            {
                 message += "You won!\n";
+            }
             else
+            {
                 message += "You lost!\n";
+            }
 
-            messageDisplay.Text = message;
-            messageDisplay.Visibility = Visibility.Visible;
+            this.messageDisplay.Text = message;
+            this.messageDisplay.Visibility = Visibility.Visible;
         }
 
         private void createAndPlacePlayerShip(Canvas background)
         {
-            playerShip = new PlayerShip();
-            background.Children.Add(playerShip.Sprite);
+            this.playerShip = new PlayerShip();
+            background.Children.Add(this.playerShip.Sprite);
 
-            placePlayerShipNearBottomOfBackgroundCentered();
+            this.placePlayerShipNearBottomOfBackgroundCentered();
         }
 
         private void placePlayerShipNearBottomOfBackgroundCentered()
         {
-            playerShip.X = backgroundWidth / 2 - playerShip.Width / 2.0;
-            playerShip.Y = backgroundHeight - playerShip.Height - PlayerShipBottomOffset;
+            this.playerShip.X = this.backgroundWidth / 2 - this.playerShip.Width / 2.0;
+            this.playerShip.Y = this.backgroundHeight - this.playerShip.Height - PlayerShipBottomOffset;
         }
 
         /// <summary>
@@ -206,7 +222,10 @@ namespace SpaceInvaders.Model
         /// </summary>
         public void MovePlayerShipLeft()
         {
-            if (playerShip.X > 0) playerShip.MoveLeft();
+            if (this.playerShip.X > 0)
+            {
+                this.playerShip.MoveLeft();
+            }
         }
 
         /// <summary>
@@ -216,23 +235,26 @@ namespace SpaceInvaders.Model
         /// </summary>
         public void MovePlayerShipRight()
         {
-            if (playerShip.X < backgroundWidth - playerShip.Width) playerShip.MoveRight();
+            if (this.playerShip.X < this.backgroundWidth - this.playerShip.Width)
+            {
+                this.playerShip.MoveRight();
+            }
         }
 
         private void playerHit()
         {
-            lives--;
+            this.lives--;
 
-            if(lives <= 0)
+            if(this.lives <= 0)
             {
-                playerShip.Sprite.Visibility = Visibility.Collapsed;
-                gameOver(false);
+                this.playerShip.Sprite.Visibility = Visibility.Collapsed;
+                this.gameOver(false);
             }
         }
         private void activatePlayerBullet(Bullet bullet)
         {
-            bullet.X = playerShip.X + .5 * playerShip.Width - .5 * bullet.Width;
-            bullet.Y = playerShip.Y - bullet.Height;
+            bullet.X = this.playerShip.X + .5 * this.playerShip.Width - .5 * bullet.Width;
+            bullet.Y = this.playerShip.Y - bullet.Height;
             bullet.Sprite.Visibility = Visibility.Visible;
         }
         
@@ -243,19 +265,17 @@ namespace SpaceInvaders.Model
         {
             int bulletCount = 0;
 
-            bool bulletFired = false;
-
-            if (timeBetweenPlayerBullets >= maxTimeBetweenPlayerBullets) bulletFired = true;
+            bool bulletFired = this.timeBetweenPlayerBullets >= MaxTimeBetweenPlayerBullets;
 
             do
             {
-                if(playerBullets[bulletCount].Sprite.Visibility == Visibility.Collapsed)
+                if(this.playerBullets[bulletCount].Sprite.Visibility == Visibility.Collapsed)
                 {
-                    activatePlayerBullet(playerBullets[bulletCount]);
+                    this.activatePlayerBullet(this.playerBullets[bulletCount]);
                     bulletFired = true;
                 }
                 bulletCount++;
-            } while (bulletFired == false && bulletCount < playerBullets.Count);
+            } while (bulletFired == false && bulletCount < this.playerBullets.Count);
         }
 
         #endregion

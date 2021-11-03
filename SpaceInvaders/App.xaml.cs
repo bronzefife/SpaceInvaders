@@ -21,7 +21,7 @@ namespace SpaceInvaders
         /// </summary>
         public App()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             Suspending += OnSuspending;
         }
 
@@ -59,10 +59,12 @@ namespace SpaceInvaders
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
+                {
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
                     rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                }
 
                 // Ensure the current window is active
                 Window.Current.Activate();
@@ -74,7 +76,7 @@ namespace SpaceInvaders
         /// </summary>
         /// <param name="sender">The Frame which failed navigation</param>
         /// <param name="e">Details about the navigation failure</param>
-        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private static void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
@@ -86,7 +88,7 @@ namespace SpaceInvaders
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private static void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity

@@ -7,11 +7,11 @@ namespace SpaceInvaders.Model
 {
     internal class EnemyManager
     {
-        private const int enemiesInRow1 = 2;
-        private const int enemiesInRow2 = 4;
-        private const int enemiesInRow3 = 6;
-        private const int enemiesInRow4 = 8;
-        private const int totalMovementsAllowed = 20;
+        private const int EnemiesInRow1 = 2;
+        private const int EnemiesInRow2 = 4;
+        private const int EnemiesInRow3 = 6;
+        private const int EnemiesInRow4 = 8;
+        private const int TotalMovementsAllowed = 20;
         private readonly double backgroundHeight;
         private readonly double backgroundWidth;
         private readonly IList<EnemyShip> enemyShips;
@@ -29,32 +29,41 @@ namespace SpaceInvaders.Model
         /// <param name="width">The width of the game play window.</param>
         public EnemyManager(Canvas canvas, double height, double width)
         {
-            if (height <= 0) throw new ArgumentOutOfRangeException(nameof(backgroundHeight));
+            if (height <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(this.backgroundHeight));
+            }
 
-            if (width <= 0) throw new ArgumentOutOfRangeException(nameof(backgroundWidth));
+            if (width <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(this.backgroundWidth));
+            }
 
-            if (canvas == null) throw new ArgumentOutOfRangeException(nameof(canvas));
+            if (canvas == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(canvas));
+            }
 
-            backgroundHeight = height;
-            backgroundWidth = width;
+            this.backgroundHeight = height;
+            this.backgroundWidth = width;
 
-            enemyShips = new List<EnemyShip>();
-            random = new Random();
-            movingRight = true;
-            movements = 10;
-            EnemyBullet = new Bullet(false);
-            canvas.Children.Add(EnemyBullet.Sprite);
-            EnemyBullet.Sprite.Visibility = Visibility.Collapsed;
-            createAllEnemies();
-            addEnemiesToCanvas(canvas);
-            positionEnemies();
+            this.enemyShips = new List<EnemyShip>();
+            this.random = new Random();
+            this.movingRight = true;
+            this.movements = 10;
+            this.EnemyBullet = new Bullet(false);
+            canvas.Children.Add(this.EnemyBullet.Sprite);
+            this.EnemyBullet.Sprite.Visibility = Visibility.Collapsed;
+            this.createAllEnemies();
+            this.addEnemiesToCanvas(canvas);
+            this.positionEnemies();
         }
 
         public Bullet EnemyBullet { get; protected set; }
 
         private void addEnemiesToCanvas(Canvas canvas)
         {
-            foreach (var ship in enemyShips)
+            foreach (var ship in this.enemyShips)
             {
                 canvas.Children.Add(ship.Sprite1);
                 canvas.Children.Add(ship.Sprite2);
@@ -63,61 +72,73 @@ namespace SpaceInvaders.Model
 
         private void positionEnemies()
         {
-            var shipWidth = enemyShips[0].Width;
+            var shipWidth = this.enemyShips[0].Width;
             var shipGap = shipWidth / 2;
-            double distanceFromLeft;
-            int rowNumberFromTop;
-            int shipsPerRow;
-            int shipNumberinRow;
-            var gapFromSides = totalMovementsAllowed * enemyShips[0].SpeedX;
 
-            for (var i = 0; i < enemyShips.Count; i++)
+            for (var i = 0; i < this.enemyShips.Count; i++)
             {
-                shipNumberinRow = i;
+                int rowNumberFromTop;
+                int shipsPerRow;
+                int shipNumberInRow = i;
 
-                if (i < enemiesInRow1)
+                if (i < EnemiesInRow1)
                 {
                     rowNumberFromTop = 1;
-                    shipsPerRow = enemiesInRow1;
+                    shipsPerRow = EnemiesInRow1;
                 }
-                else if (i < enemiesInRow1 + enemiesInRow2)
+                else if (i < EnemiesInRow1 + EnemiesInRow2)
                 {
                     rowNumberFromTop = 2;
-                    shipsPerRow = enemiesInRow2;
-                    shipNumberinRow -= enemiesInRow1;
+                    shipsPerRow = EnemiesInRow2;
+                    shipNumberInRow -= EnemiesInRow1;
                 }
-                else if (i < enemiesInRow1 + enemiesInRow2 + enemiesInRow3)
+                else if (i < EnemiesInRow1 + EnemiesInRow2 + EnemiesInRow3)
                 {
                     rowNumberFromTop = 3;
-                    shipsPerRow = enemiesInRow3;
-                    shipNumberinRow -= enemiesInRow1 + enemiesInRow2;
+                    shipsPerRow = EnemiesInRow3;
+                    shipNumberInRow -= EnemiesInRow1 + EnemiesInRow2;
                 }
                 else
                 {
                     rowNumberFromTop = 4;
-                    shipsPerRow = enemiesInRow4;
-                    shipNumberinRow -= enemiesInRow1 + enemiesInRow2 + enemiesInRow3;
+                    shipsPerRow = EnemiesInRow4;
+                    shipNumberInRow -= EnemiesInRow1 + EnemiesInRow2 + EnemiesInRow3;
                 }
 
-                distanceFromLeft = (backgroundWidth - shipsPerRow * shipWidth - (shipsPerRow - 1) * shipGap) / 2;
+                double distanceFromLeft = (this.backgroundWidth - shipsPerRow * shipWidth - (shipsPerRow - 1) * shipGap) / 2;
 
-                enemyShips[i].Y = (enemyShips[i].Height + 20) * rowNumberFromTop;
+                this.enemyShips[i].Y = (this.enemyShips[i].Height + 20) * rowNumberFromTop;
 
-                enemyShips[i].X = distanceFromLeft + (shipGap + shipWidth) * shipNumberinRow;
+                this.enemyShips[i].X = distanceFromLeft + (shipGap + shipWidth) * shipNumberInRow;
             }
         }
 
         private void createAllEnemies()
         {
-            for (var i = 0; i < enemiesInRow1; i++) createEnemy(4);
-            for (var i = 0; i < enemiesInRow2; i++) createEnemy(3);
-            for (var i = 0; i < enemiesInRow3; i++) createEnemy(2);
-            for (var i = 0; i < enemiesInRow4; i++) createEnemy(1);
+            for (var i = 0; i < EnemiesInRow1; i++)
+            {
+                this.createEnemy(4);
+            }
+
+            for (var i = 0; i < EnemiesInRow2; i++)
+            {
+                this.createEnemy(3);
+            }
+
+            for (var i = 0; i < EnemiesInRow3; i++)
+            {
+                this.createEnemy(2);
+            }
+
+            for (var i = 0; i < EnemiesInRow4; i++)
+            {
+                this.createEnemy(1);
+            }
         }
 
         private void createEnemy(int enemyLevel)
         {
-            enemyShips.Add(new EnemyShip(enemyLevel));
+            this.enemyShips.Add(new EnemyShip(enemyLevel));
         }
 
         /// <summary>
@@ -125,15 +146,15 @@ namespace SpaceInvaders.Model
         /// </summary>
         public void OnTick()
         {
-            moveEnemies();
-            animateEnemies();
-            randomShot();
-            moveBullet();
+            this.moveEnemies();
+            this.animateEnemies();
+            this.randomShot();
+            this.moveBullet();
         }
 
         private void animateEnemies()
         {
-            foreach(var ship in enemyShips)
+            foreach(var ship in this.enemyShips)
             {
                 ship.Animate();
             }
@@ -141,55 +162,76 @@ namespace SpaceInvaders.Model
 
         private void moveEnemies()
         {
-            if (movements >= totalMovementsAllowed)
+            if (this.movements >= TotalMovementsAllowed)
             {
-                movements = 0;
-                movingRight = !movingRight;
+                this.movements = 0;
+                this.movingRight = !this.movingRight;
             }
 
-            if (movingRight)
-                moveEnemiesRight();
+            if (this.movingRight)
+            {
+                this.moveEnemiesRight();
+            }
             else
-                moveEnemiesLeft();
+            {
+                this.moveEnemiesLeft();
+            }
 
-            movements++;
+            this.movements++;
         }
 
         private void moveEnemiesRight()
         {
-            foreach (var ship in enemyShips) ship.MoveRight();
+            foreach (var ship in this.enemyShips)
+            {
+                ship.MoveRight();
+            }
         }
 
         private void moveEnemiesLeft()
         {
-            foreach (var ship in enemyShips) ship.MoveLeft();
+            foreach (var ship in this.enemyShips)
+            {
+                ship.MoveLeft();
+            }
         }
 
         private void randomShot()
         {
             var shootingShips = 0;
 
-            foreach (var ship in enemyShips)
+            foreach (var ship in this.enemyShips)
+            {
                 if (ship.CanShoot)
+                {
                     shootingShips++;
+                }
+            }
 
-            if (random.Next(101) == 1 && shootingShips > 0 && EnemyBullet.Sprite.Visibility == Visibility.Collapsed)
-                spawnEnemyBullet(enemyShips[random.Next(shootingShips + 1)]);
+            if (this.random.Next(101) == 1 && shootingShips > 0 && this.EnemyBullet.Sprite.Visibility == Visibility.Collapsed)
+            {
+                this.spawnEnemyBullet(this.enemyShips[this.random.Next(shootingShips + 1)]);
+            }
         }
 
         private void spawnEnemyBullet(EnemyShip enemy)
         {
-            EnemyBullet.Y = enemy.Y + enemy.Height + EnemyBullet.Height;
-            EnemyBullet.X = enemy.X + .5 * enemy.Width - .5 * EnemyBullet.Width;
-            EnemyBullet.Sprite.Visibility = Visibility.Visible;
+            this.EnemyBullet.Y = enemy.Y + enemy.Height + this.EnemyBullet.Height;
+            this.EnemyBullet.X = enemy.X + .5 * enemy.Width - .5 * this.EnemyBullet.Width;
+            this.EnemyBullet.Sprite.Visibility = Visibility.Visible;
         }
 
         private void moveBullet()
         {
-            if (EnemyBullet.Sprite.Visibility == Visibility.Visible) EnemyBullet.MoveDown();
+            if (this.EnemyBullet.Sprite.Visibility == Visibility.Visible)
+            {
+                this.EnemyBullet.MoveDown();
+            }
 
-            if (EnemyBullet.Y >= backgroundHeight - EnemyBullet.Height)
-                EnemyBullet.Sprite.Visibility = Visibility.Collapsed;
+            if (this.EnemyBullet.Y >= this.backgroundHeight - this.EnemyBullet.Height)
+            {
+                this.EnemyBullet.Sprite.Visibility = Visibility.Collapsed;
+            }
         }
 
         /// <summary>
@@ -199,8 +241,7 @@ namespace SpaceInvaders.Model
         /// <returns>True if there are enemies remaining, and false if not</returns>
         public bool EnemiesRemain()
         {
-            if (enemyShips.Count == 0) return false;
-            return true;
+            return this.enemyShips.Count != 0;
         }
 
         /// <summary>
@@ -212,14 +253,16 @@ namespace SpaceInvaders.Model
         {
             var returnValue = 0;
 
-            for (var i = 0; i < enemyShips.Count; i++)
-                if (playerBullet.CheckForCollision(enemyShips[i]) != null)
+            for (var i = 0; i < this.enemyShips.Count; i++)
+            {
+                if (playerBullet.CheckForCollision(this.enemyShips[i]) != null)
                 {
-                    returnValue = enemyShips[i].PointValue;
-                    enemyShips[i].Sprite.Visibility = Visibility.Collapsed;
-                    enemyShips.RemoveAt(i);
+                    returnValue = this.enemyShips[i].PointValue;
+                    this.enemyShips[i].Sprite.Visibility = Visibility.Collapsed;
+                    this.enemyShips.RemoveAt(i);
                     return returnValue;
                 }
+            }
 
             return returnValue;
         }
