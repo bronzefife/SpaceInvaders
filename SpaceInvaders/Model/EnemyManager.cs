@@ -146,7 +146,7 @@ namespace SpaceInvaders.Model
                 if (ship.CanShoot)
                     shootingShips++;
 
-            if (random.Next(101) <= 5 && shootingShips > 0 && EnemyBullet.Sprite.Visibility == Visibility.Collapsed)
+            if (random.Next(101) == 1 && shootingShips > 0 && EnemyBullet.Sprite.Visibility == Visibility.Collapsed)
                 spawnEnemyBullet(enemyShips[random.Next(shootingShips + 1)]);
         }
 

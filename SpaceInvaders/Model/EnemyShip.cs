@@ -47,7 +47,7 @@ namespace SpaceInvaders.Model
                     break;
                 case 4:
                     PointValue = 20;
-                    Sprite = new EnemyShip3Sprite();
+                    Sprite = new EnemyShip4Sprite();
                     CanShoot = true;
                     break;
                 default:
