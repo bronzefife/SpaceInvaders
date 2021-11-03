@@ -190,12 +190,11 @@ namespace SpaceInvaders.Model
         {
             var returnValue = 0;
 
-            if (playerBullet.Sprite.Visibility == Visibility.Collapsed) return returnValue;
-
             for (var i = 0; i < enemyShips.Count; i++)
                 if (playerBullet.CheckForCollision(enemyShips[i]) != null)
                 {
                     returnValue = enemyShips[i].PointValue;
+                    enemyShips[i].Sprite.Visibility = Visibility.Collapsed;
                     enemyShips.RemoveAt(i);
                     return returnValue;
                 }

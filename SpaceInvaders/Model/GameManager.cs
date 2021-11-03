@@ -44,6 +44,16 @@ namespace SpaceInvaders.Model
 
         private int timeBetweenPlayerBullets;
         private int lives;
+        public int Lives
+        {
+            get => lives;
+            set
+            {
+                lives = Lives;
+                livesChanged(lives);
+            }
+        }
+
         private int score;
 
         public int Score
@@ -135,7 +145,7 @@ namespace SpaceInvaders.Model
 
             if (!enemyManager.EnemiesRemain()) gameOver(true);
 
-            if (enemyManager.EnemyBullet.CheckForCollision(playerShip) != null) gameOver(false);
+            if (enemyManager.EnemyBullet.CheckForCollision(playerShip) != null) playerHit();
         }
 
         private void didPlayerBulletHitEnemy()
@@ -164,6 +174,11 @@ namespace SpaceInvaders.Model
         {
             score += pointsToAdd;
             pointsDisplay.Text = score.ToString();
+        }
+
+        private void livesChanged()
+        {
+
         }
 
 
@@ -214,6 +229,16 @@ namespace SpaceInvaders.Model
             if (playerShip.X < backgroundWidth - playerShip.Width) playerShip.MoveRight();
         }
 
+        private void playerHit()
+        {
+            lives--;
+
+            if(lives <= 0)
+            {
+                playerShip.Sprite.Visibility = Visibility.Collapsed;
+                gameOver(false);
+            }
+        }
         private void activatePlayerBullet(Bullet bullet)
         {
             bullet.X = playerShip.X + .5 * playerShip.Width - .5 * bullet.Width;
@@ -227,6 +252,8 @@ namespace SpaceInvaders.Model
 
             bool bulletFired = false;
 
+            if (timeBetweenPlayerBullets >= maxTimeBetweenPlayerBullets) bulletFired = true;
+
             do
             {
                 if(playerBullets[bulletCount].Sprite.Visibility == Visibility.Collapsed)
@@ -235,7 +262,7 @@ namespace SpaceInvaders.Model
                     bulletFired = true;
                 }
                 bulletCount++;
-            } while (bulletFired == false && bulletCount < playerBullets.Count && timeBetweenPlayerBullets >= maxTimeBetweenPlayerBullets);
+            } while (bulletFired == false && bulletCount < playerBullets.Count);
         }
 
         #endregion
