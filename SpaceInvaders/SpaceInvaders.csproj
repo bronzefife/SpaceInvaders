@@ -145,11 +145,20 @@
     <Compile Include="View\Sprites\EnemyShip2Sprite.xaml.cs">
       <DependentUpon>EnemyShip2Sprite.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sprites\EnemyShip2Sprite2.xaml.cs">
+      <DependentUpon>EnemyShip2Sprite2.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\EnemyShip3Sprite.xaml.cs">
       <DependentUpon>EnemyShip3Sprite.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sprites\EnemyShip3Sprite2.xaml.cs">
+      <DependentUpon>EnemyShip3Sprite2.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\EnemyShip4Sprite.xaml.cs">
       <DependentUpon>EnemyShip4Sprite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\EnemyShip4Sprite2.xaml.cs">
+      <DependentUpon>EnemyShip4Sprite2.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\ISpriteRender.cs" />
     <Compile Include="View\Sprites\PlayerBulletSprite.xaml.cs">
@@ -199,11 +208,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Sprites\EnemyShip2Sprite2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Sprites\EnemyShip3Sprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Sprites\EnemyShip3Sprite2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Sprites\EnemyShip4Sprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\EnemyShip4Sprite2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

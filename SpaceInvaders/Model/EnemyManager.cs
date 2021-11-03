@@ -43,7 +43,11 @@ namespace SpaceInvaders.Model
 
         private void addEnemiesToCanvas(Canvas canvas)
         {
-            foreach (var ship in enemyShips) canvas.Children.Add(ship.Sprite);
+            foreach (var ship in enemyShips)
+            {
+                canvas.Children.Add(ship.Sprite1);
+                canvas.Children.Add(ship.Sprite2);
+            }
         }
 
         private void positionEnemies()
@@ -108,8 +112,17 @@ namespace SpaceInvaders.Model
         public void OnTick()
         {
             moveEnemies();
+            animateEnemies();
             randomShot();
             moveBullet();
+        }
+
+        private void animateEnemies()
+        {
+            foreach(var ship in enemyShips)
+            {
+                ship.Animate();
+            }
         }
 
         private void moveEnemies()

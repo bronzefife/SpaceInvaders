@@ -1,0 +1,28 @@
+﻿<local:BaseSprite
+    x:Class="SpaceInvaders.View.Sprites.EnemyShip3Sprite2"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SpaceInvaders.View.Sprites"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="30"
+    d:DesignWidth="50"
+    Height="30"
+    Width="50">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="EnemyShipColor" Color="HotPink" />
+    </UserControl.Resources>
+
+    <Canvas>
+        <Rectangle Width="50" Height="10" Fill="{StaticResource EnemyShipColor}" />
+        <Polygon
+            Points="0,0 0,30 15,0 25,20 35,0 50,30 50,0"
+            StrokeThickness="0">
+            <Polygon.Fill>
+                <SolidColorBrush Color="HotPink" />
+            </Polygon.Fill>
+        </Polygon>
+    </Canvas>
+</local:BaseSprite>
