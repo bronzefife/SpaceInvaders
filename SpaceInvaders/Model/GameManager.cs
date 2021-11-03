@@ -36,7 +36,6 @@ namespace SpaceInvaders.Model
 
         private const int maxTimeBetweenPlayerBullets = 10;
         private const int maxLives = 3;
-        private const int shipsPerRow = 4;
         private const int playerBulletAmount = 3;
         private const double PlayerShipBottomOffset = 30;
         private readonly double backgroundHeight;
@@ -50,7 +49,7 @@ namespace SpaceInvaders.Model
             set
             {
                 lives = Lives;
-                livesChanged(lives);
+                livesChanged();
             }
         }
 

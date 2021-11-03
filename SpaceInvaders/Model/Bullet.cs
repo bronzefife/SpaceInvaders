@@ -43,6 +43,8 @@ namespace SpaceInvaders.Model
         {
             if (ship == null) throw new ArgumentNullException(nameof(ship));
 
+            if (Sprite.Visibility == Visibility.Collapsed) return null;
+
             var bulletBoundary = new Rect(X, Y, Width, Height);
             var shipBoundary = new Rect(ship.X, ship.Y, ship.Width, ship.Height);
 
@@ -52,7 +54,6 @@ namespace SpaceInvaders.Model
             if (intersect.IsEmpty) return null;
 
             Sprite.Visibility = Visibility.Collapsed;
-            ship.Sprite.Visibility = Visibility.Collapsed;
 
             return ship;
         }
