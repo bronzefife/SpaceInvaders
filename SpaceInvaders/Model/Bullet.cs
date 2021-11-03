@@ -19,10 +19,12 @@ namespace SpaceInvaders.Model
         #endregion
 
         #region Constructors
-
+        
         /// <summary>
-        ///     Initializes a new instance of the <see cref="EnemyBullet" /> class.
+        /// Initializes a new instance of the <see cref="Bullet"/> class.
         /// </summary>
+        /// <param name="isPlayerBullet">if set to <c>true</c> [is player bullet],
+        /// and is enemy bullet if set to <c>false</c>.</param>
         public Bullet(bool isPlayerBullet)
         {
             if (isPlayerBullet)

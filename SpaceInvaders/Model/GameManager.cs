@@ -43,15 +43,6 @@ namespace SpaceInvaders.Model
 
         private int timeBetweenPlayerBullets;
         private int lives;
-        public int Lives
-        {
-            get => lives;
-            set
-            {
-                lives = Lives;
-                livesChanged();
-            }
-        }
 
         private int score;
 
@@ -163,7 +154,12 @@ namespace SpaceInvaders.Model
                 if (bullet.Y <= 0) bullet.Sprite.Visibility = Visibility.Collapsed;
             }
         }
-
+        
+        /// <summary>
+        /// Did the enemy bullet hit player.
+        /// </summary>
+        /// <param name="bullet">The bullet.</param>
+        /// <returns>True if the player was hit, false otherwise</returns>
         public bool DidEnemyBulletHitPlayer(Bullet bullet)
         {
             return bullet.CheckForCollision(playerShip) != null;
@@ -173,11 +169,6 @@ namespace SpaceInvaders.Model
         {
             score += pointsToAdd;
             pointsDisplay.Text = score.ToString();
-        }
-
-        private void livesChanged()
-        {
-
         }
 
 
@@ -244,7 +235,10 @@ namespace SpaceInvaders.Model
             bullet.Y = playerShip.Y - bullet.Height;
             bullet.Sprite.Visibility = Visibility.Visible;
         }
-
+        
+        /// <summary>
+        /// Shoots the player bullet.
+        /// </summary>
         public void ShootPlayerBullet()
         {
             int bulletCount = 0;

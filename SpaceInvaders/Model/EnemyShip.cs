@@ -66,7 +66,10 @@ namespace SpaceInvaders.Model
             Sprite = Sprite1;
             Sprite2.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
-
+        
+        /// <summary>
+        /// Animates this ship's sprite.
+        /// </summary>
         public void Animate()
         {
             if(Sprite.Equals(Sprite1))

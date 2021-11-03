@@ -20,9 +20,20 @@ namespace SpaceInvaders.Model
 
         private bool movingRight;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EnemyManager" /> class.
+        ///     Precondition: backgroundHeight > 0 AND backgroundWidth > 0 AND canvas != null
+        /// </summary>
+        /// <param name="canvas">The background canvas.</param>
+        /// <param name="height">The height of the game play window.</param>
+        /// <param name="width">The width of the game play window.</param>
         public EnemyManager(Canvas canvas, double height, double width)
         {
-            //TODO: error checking
+            if (height <= 0) throw new ArgumentOutOfRangeException(nameof(backgroundHeight));
+
+            if (width <= 0) throw new ArgumentOutOfRangeException(nameof(backgroundWidth));
+
+            if (canvas == null) throw new ArgumentOutOfRangeException(nameof(canvas));
 
             backgroundHeight = height;
             backgroundWidth = width;
@@ -109,6 +120,9 @@ namespace SpaceInvaders.Model
             enemyShips.Add(new EnemyShip(enemyLevel));
         }
 
+        /// <summary>
+        ///     Performs enemy tasks that should be undertaken on the tick of a clock
+        /// </summary>
         public void OnTick()
         {
             moveEnemies();
@@ -178,14 +192,22 @@ namespace SpaceInvaders.Model
                 EnemyBullet.Sprite.Visibility = Visibility.Collapsed;
         }
 
-        //TODO comment
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EnemyManager" /> class.
+        ///     Precondition: backgroundHeight > 0 AND backgroundWidth > 0 AND canvas != null
+        /// </summary>
+        /// <returns>True if there are enemies remaining, and false if not</returns>
         public bool EnemiesRemain()
         {
             if (enemyShips.Count == 0) return false;
             return true;
         }
 
-        //TODO comment
+        /// <summary>
+        ///     Evaluates whether a player bullet has hit an enemy, returning 0 if
+        ///     there is no collision and returning the enemy's score value otherwise
+        /// </summary>
+        /// <returns>The score of the enemy hit, if any</returns>
         public int DidPlayerBulletHitEnemy(Bullet playerBullet)
         {
             var returnValue = 0;
